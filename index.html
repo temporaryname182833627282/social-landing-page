@@ -64,10 +64,10 @@ canvas {
 }
 
 .tagline {
+  font-size: var(--tagline-size, clamp(0.7rem, 1.8vmin, 1rem));
   margin-top: clamp(0.3em, 1vmin, 0.6em);
-  font-size: clamp(0.7rem, 1.8vmin, 1rem);
   opacity: .75;
-  transition: opacity .6s ease;
+  transition: opacity .6s ease, font-size .1s ease;
   line-height: 1.45;
   max-width: min(90vw, 740px);
   margin-inline: auto;
@@ -120,7 +120,7 @@ canvas {
   transform-origin: center;
 }
 
-.social.s2 img { width: clamp(26px, 4vmin, 46px); height: clamp(26px, 4vmin, 46px); }
+/* ✅ X/TWITTER NOW UNIFORM - no special override */
 
 .s1 { top: 0%; left: 50%; transform: translate(-50%, -50%); }
 .s2 { top: 50%; right: 0%; transform: translate(50%, -50%); }
@@ -166,7 +166,6 @@ canvas {
 </div>
 
 <script>
-// PERFECTLY WORKING VERSION WITH TYPE COMMENTS (no module breakage)
 const canvas = document.getElementById('neural');
 const ctx = canvas.getContext('2d');
 const outers = document.querySelector('.orbit-outer');
@@ -185,12 +184,14 @@ function resize() {
   const orbitSize = Math.min(innerWidth, innerHeight) * 0.75;
   const iconSize = orbitSize * 0.12;
   const imgSize = iconSize * 0.6;
-  const nameSize = Math.min(orbitSize * 0.15, innerWidth * 0.12, 80);
+  const nameSize = Math.min(orbitSize * 0.12, innerWidth * 0.10, 65);
+  const taglineSize = Math.min(orbitSize * 0.03, innerWidth * 0.025, 16);
   
   document.documentElement.style.setProperty('--orbit-size', `${orbitSize}px`);
   document.documentElement.style.setProperty('--icon-size', `${iconSize}px`);
   document.documentElement.style.setProperty('--img-size', `${imgSize}px`);
   document.documentElement.style.setProperty('--name-size', `${nameSize}px`);
+  document.documentElement.style.setProperty('--tagline-size', `${taglineSize}px`);
   
   canvas.width = innerWidth;
   canvas.height = innerHeight;
