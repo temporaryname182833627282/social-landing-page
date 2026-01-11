@@ -5,16 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>just a small corner of the internet i made</title>
 <style>
-/* reset everything, no surprises */
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* full viewport, no scrolling bullshit */
+html { height: -webkit-fill-available; }
+
 html, body {
   height: 100vh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   width: 100vw;
   overflow: hidden;
   background: #000;
@@ -22,7 +20,6 @@ html, body {
   font-family: 'Poppins', sans-serif;
 }
 
-/* subtle background swirl, don't touch */
 body::before {
   content: '';
   position: fixed;
@@ -33,25 +30,16 @@ body::before {
   pointer-events: none;
 }
 
-/* background color shift, leave it */
 @keyframes hueShift { 
   0% { filter: hue-rotate(0deg); } 
   100% { filter: hue-rotate(60deg); } 
 }
 
 canvas {
-  /* particles live here, full bleed */
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: 100%;
-  filter: blur(1px) brightness(.7); 
-  z-index: 0; 
-  pointer-events: none;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  filter: blur(1px) brightness(.7); z-index: 0; pointer-events: none;
 }
 
-/* velithra name - dead center */
 .core {
   position: fixed;
   top: 50%;
@@ -63,8 +51,7 @@ canvas {
 }
 
 .name {
-  /* breathing gradient text */
-  font-size: clamp(2rem, 6vmin, 6rem);
+  font-size: var(--name-size, clamp(1.8rem, 5.5vmin, 5rem));
   background: linear-gradient(90deg, #00e1ff, #ff4aff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -77,9 +64,8 @@ canvas {
 }
 
 .tagline {
-  /* subtitle, changes on hover */
   margin-top: clamp(0.3em, 1vmin, 0.6em);
-  font-size: clamp(0.8rem, 2vmin, 1.1rem);
+  font-size: clamp(0.7rem, 1.8vmin, 1rem);
   opacity: .75;
   transition: opacity .6s ease;
   line-height: 1.45;
@@ -87,61 +73,30 @@ canvas {
   margin-inline: auto;
 }
 
-/* main orbit container - viewport ONLY sizing */
 .orbit-container {
   position: fixed;
   top: 50%;
   left: 50%;
+  width: var(--orbit-size, 500px);
+  height: var(--orbit-size, 500px);
   transform: translate(-50%, -50%);
-  /* pure vmin - scales perfectly with viewport */
-  width: 75vmin;
-  height: 75vmin;
-  max-width: 90vw;
-  max-height: 90vh;
   z-index: 4;
 }
 
-/* outer ring - viewport constrained circle */
-.orbit-outer {
+.orbit-outer, .orbit-inner {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* perfect circle constraint */
-  width: 100%;
-  height: 100%;
-  transform: translate(-50%, -50%);
   border-radius: 50%;
-  animation: rotateOuter 55s linear infinite;
 }
 
-/* inner ring - 70% size, opposite spin */
-.orbit-inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 70%;
-  height: 70%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  animation: rotateInner 34s linear infinite reverse;
-}
+.orbit-outer { width: 100%; height: 100%; }
+.orbit-inner { width: 70%; height: 70%; }
 
-/* orbit spin animations */
-@keyframes rotateOuter {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes rotateInner {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* social icons - viewport scaled */
 .social {
   position: absolute;
-  width: clamp(42px, 5.5vmin, 65px);
-  height: clamp(42px, 5.5vmin, 65px);
+  width: var(--icon-size, 50px);
+  height: var(--icon-size, 50px);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -159,19 +114,14 @@ canvas {
 }
 
 .social img {
-  width: clamp(22px, 3.5vmin, 40px);
-  height: clamp(22px, 3.5vmin, 40px);
+  width: var(--img-size, 30px);
+  height: var(--img-size, 30px);
   filter: drop-shadow(0 1px 3px rgba(0,0,0,.4));
   transform-origin: center;
 }
 
-/* X icon slightly bigger */
-.social.s2 img {
-  width: clamp(26px, 4vmin, 46px);
-  height: clamp(26px, 4vmin, 46px);
-}
+.social.s2 img { width: clamp(26px, 4vmin, 46px); height: clamp(26px, 4vmin, 46px); }
 
-/* mobile-safe positions - viewport relative */
 .s1 { top: 0%; left: 50%; transform: translate(-50%, -50%); }
 .s2 { top: 50%; right: 0%; transform: translate(50%, -50%); }
 .s3 { bottom: 0%; left: 50%; transform: translate(-50%, 50%); }
@@ -182,18 +132,14 @@ canvas {
 </head>
 <body>
 
-<!-- particle canvas behind everything -->
 <canvas id="neural"></canvas>
 
-<!-- center text stack -->
 <div class="core">
   <h1 class="name">velithra</h1>
   <p class="tagline" id="tagline">one place, all of me.</p>
 </div>
 
-<!-- orbit system -->
 <div class="orbit-container">
-  <!-- outer ring (55s clockwise) -->
   <div class="orbit-outer">
     <div class="social s1" data-desc="instagram — progress shots" data-url="https://www.instagram.com/user1928383949/">
       <img src="https://cdn.simpleicons.org/instagram/ffffff" alt="instagram"/>
@@ -209,7 +155,6 @@ canvas {
     </div>
   </div>
   
-  <!-- inner ring (34s counterclockwise) -->
   <div class="orbit-inner">
     <div class="social s5" data-desc="snapchat — low effort stuff">
       <img src="https://cdn.simpleicons.org/snapchat/ffffff" alt="snapchat"/>
@@ -221,14 +166,35 @@ canvas {
 </div>
 
 <script>
-/* particle system */
+// PERFECTLY WORKING VERSION WITH TYPE COMMENTS (no module breakage)
 const canvas = document.getElementById('neural');
 const ctx = canvas.getContext('2d');
+const outers = document.querySelector('.orbit-outer');
+const inners = document.querySelector('.orbit-inner');
 
-/* resize canvas + regen particles */
+/** @type {Array<{x: number, y: number, r: number, life: number, a: number}>} */
+let trailParts = [];
+let animationTime = 0;
+let outerRotation = 0;
+let innerRotation = 0;
+
+/** @type {Array<{x: number, y: number, r: number, a: number, v: number}>} */
+window.parts = [];
+
 function resize() {
+  const orbitSize = Math.min(innerWidth, innerHeight) * 0.75;
+  const iconSize = orbitSize * 0.12;
+  const imgSize = iconSize * 0.6;
+  const nameSize = Math.min(orbitSize * 0.15, innerWidth * 0.12, 80);
+  
+  document.documentElement.style.setProperty('--orbit-size', `${orbitSize}px`);
+  document.documentElement.style.setProperty('--icon-size', `${iconSize}px`);
+  document.documentElement.style.setProperty('--img-size', `${imgSize}px`);
+  document.documentElement.style.setProperty('--name-size', `${nameSize}px`);
+  
   canvas.width = innerWidth;
   canvas.height = innerHeight;
+  
   const parts = [];
   for (let i = 0; i < 360; i++) {
     parts.push({
@@ -241,11 +207,14 @@ function resize() {
   }
   window.parts = parts;
 }
-resize();
-window.addEventListener('resize', resize);
 
-/* mouse trail particles */
-let trailParts = [];
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(resize, 100);
+});
+resize();
+
 document.addEventListener('mousemove', (e) => {
   for(let i = 0; i < 3; i++) {
     trailParts.push({
@@ -258,24 +227,27 @@ document.addEventListener('mousemove', (e) => {
   }
 });
 
-/* main animation loop */
 function anim() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.globalCompositeOperation = 'lighter';
   
-  /* ambient particles */
+  animationTime += 0.016;
+  
+  outerRotation = (animationTime / 55) * Math.PI * 2;
+  innerRotation = (animationTime / 34) * Math.PI * 2;
+  
+  outers.style.transform = `translate(-50%, -50%) rotate(${outerRotation}rad)`;
+  inners.style.transform = `translate(-50%, -50%) rotate(${-innerRotation}rad)`;
+  
   const parts = window.parts || [];
   for (const p of parts) {
     p.a += 0.002;
     p.x += Math.cos(p.a) * p.v;
     p.y += Math.sin(p.a) * p.v;
-    
-    /* wrap around edges */
     if (p.x < 0) p.x = canvas.width;
     if (p.x > canvas.width) p.x = 0;
     if (p.y < 0) p.y = canvas.height;
     if (p.y > canvas.height) p.y = 0;
-    
     const hue = 180 + Math.sin(Date.now() * 0.0001 + p.a * 2) * 60;
     ctx.beginPath();
     ctx.fillStyle = `hsla(${hue},90%,60%,.25)`;
@@ -283,16 +255,13 @@ function anim() {
     ctx.fill();
   }
   
-  /* mouse trails */
   for(let i = trailParts.length - 1; i >= 0; i--) {
     const t = trailParts[i];
     t.life -= 0.012;
     t.x += Math.cos(t.a) * 0.8;
     t.y += Math.sin(t.a) * 0.8;
-    
     t.x = Math.max(0, Math.min(t.x, canvas.width));
     t.y = Math.max(0, Math.min(t.y, canvas.height));
-    
     if(t.life > 0) {
       ctx.save();
       ctx.globalAlpha = t.life;
@@ -305,39 +274,24 @@ function anim() {
       trailParts.splice(i, 1);
     }
   }
+  
+  document.querySelectorAll('.orbit-outer .social img').forEach(img => {
+    img.style.transform = `rotate(${-outerRotation}rad)`;
+  });
+  document.querySelectorAll('.orbit-inner .social img').forEach(img => {
+    img.style.transform = `rotate(${innerRotation}rad)`;
+  });
+  
   requestAnimationFrame(anim);
 }
 anim();
 
-/* counter-rotate icons so they stay upright */
-const startTime = performance.now();
-
-function rotateIcons(now) {
-  const elapsed = (now - startTime) / 1000;
-  
-  /* outer orbit icons counter-rotate */
-  document.querySelectorAll('.orbit-outer .social img').forEach(img => {
-    const deg = (elapsed / 55) * 360;
-    img.style.transform = `rotate(${-deg}deg)`;
-  });
-  
-  /* inner orbit icons counter-rotate opposite */
-  document.querySelectorAll('.orbit-inner .social img').forEach(img => {
-    const deg = (elapsed / 34) * 360;
-    img.style.transform = `rotate(${deg}deg)`;
-  });
-  
-  requestAnimationFrame(rotateIcons);
-}
-requestAnimationFrame(rotateIcons);
-
-/* social hover interactions */
 const tagline = document.getElementById('tagline');
 const baseText = "one place, all of me.";
 
 document.querySelectorAll('.social').forEach(icon => {
   const desc = icon.dataset.desc;
-  const url = icon.dataset.url;
+  const url = icon.dataset.url || '';
   
   icon.addEventListener('mouseenter', () => {
     tagline.style.opacity = '0';
@@ -362,4 +316,3 @@ document.querySelectorAll('.social').forEach(icon => {
 </script>
 </body>
 </html>
-
